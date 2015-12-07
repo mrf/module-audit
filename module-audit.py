@@ -2,8 +2,7 @@ import filecmp
 import os
 
 import drupalchecker
+import modulefinder
 
-home = os.getenv("HOME")
-print home 
-
-drupalchecker.checkme()
+if drupalchecker.checkme():
+    modulefinder.metadata()

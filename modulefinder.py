@@ -1,12 +1,25 @@
 import os
 
 # Provide list of directories containing modules to scan
-# TODO Separate class?
 def directories():
-  locations = ['modules','sites/all/modules','sites/*/modules','profiles'*'modules']
-  # assuming we are alredy in a confirmed drupal root
-  for location in locations:
-    print location
+    locations = ['sites','profiles']
+    qualifiedDirs = []
+    for location in locations:
+        for dirName, subdirList, fileList in os.walk(location):
+            if dirName.endswith('modules'):
+                qualifiedDirs.append(dirName)
+            if dirName.endswith('themes'):
+                qualifiedDirs.append(dirName)
+
+    return qualifiedDirs
 
 # Return total module count
-def number():
+def metadata():
+    for location in directories():
+        for dirName, subdirList, fileList in os.walk(location):
+            print('Found directory: %s' % dirName)
+            for fname in fileList:
+                if fname.endswith('.info'):
+                    infoFile = dirName + '/' + fname
+                    infoFile = open(infoFile,'r')
+                    print infoFile.read() 
